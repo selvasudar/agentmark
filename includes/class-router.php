@@ -67,22 +67,25 @@ class Router {
 	}
 
 	private function is_llms_txt_path() {
-		return ( strpos( $_SERVER['REQUEST_URI'], '/llms.txt' ) !== false );
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		return ( strpos( $request_uri, '/llms.txt' ) !== false );
 	}
 
 	private function is_md_extension_url() {
-		$uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		$uri         = wp_parse_url( $request_uri, PHP_URL_PATH );
 		return ( substr( $uri, -3 ) === '.md' );
 	}
 
 	private function get_path_from_uri() {
-		$uri = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		$uri         = wp_parse_url( $request_uri, PHP_URL_PATH );
 		
 		// Remove .md extension
 		$path = substr( $uri, 0, -3 );
 
 		// Remove site subdirectory if present
-		$site_path = parse_url( home_url(), PHP_URL_PATH );
+		$site_path = wp_parse_url( home_url(), PHP_URL_PATH );
 		if ( $site_path && $site_path !== '/' ) {
 			if ( strpos( $path, $site_path ) === 0 ) {
 				$path = substr( $path, strlen( $site_path ) );
