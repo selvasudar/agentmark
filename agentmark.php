@@ -9,6 +9,9 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: agentmark
  * Domain Path: /languages
+ * Requires at least: 6.9
+ * Tested up to: 6.9
+ * Requires PHP: 7.4
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +24,7 @@ define( 'AGENTMARK_PATH', plugin_dir_path( __FILE__ ) );
 define( 'AGENTMARK_URL', plugin_dir_url( __FILE__ ) );
 
 // Autoload classes (basic for includes, composer for vendor)
-require_once AGENTMARK_PATH . 'vendor/autoload.php';
+// require_once AGENTMARK_PATH . 'vendor/autoload.php';
 
 spl_autoload_register( function ( $class ) {
 	$prefix = 'AgentMark\\';

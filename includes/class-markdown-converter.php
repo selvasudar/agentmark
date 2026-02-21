@@ -75,6 +75,11 @@ class Markdown_Converter {
 		// Basic HTML to Markdown conversion
 		$markdown = $this->html_to_markdown( $content );
 		
+		// Normalize whitespace
+		$markdown = preg_replace( '/\h+$/m', '', $markdown );
+		$markdown = preg_replace( '/(\r?\n){3,}/', "\n\n", $markdown );
+		$markdown = trim( $markdown );
+
 		$output .= $markdown;
 
 		return apply_filters( 'agentmark_markdown_output', $output, $post_object );
