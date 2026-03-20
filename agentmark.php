@@ -62,12 +62,23 @@ add_action( 'save_post', function( $post_id ) {
 	delete_transient( 'agentmark_md_' . $post_id );
 } );
 
+// Auto-flush rewrite rules when plugin version changes
+add_action( 'init', function() {
+	if ( get_option( 'agentmark_rewrite_version' ) !== AGENTMARK_VERSION ) {
+		new AgentMark\Router();
+		flush_rewrite_rules();
+		update_option( 'agentmark_rewrite_version', AGENTMARK_VERSION );
+	}
+} );
+
 // Activation/Deactivation hooks
 register_activation_hook( __FILE__, function() {
 	new AgentMark\Router();
 	flush_rewrite_rules();
+	update_option( 'agentmark_rewrite_version', AGENTMARK_VERSION );
 } );
 
 register_deactivation_hook( __FILE__, function() {
+	delete_option( 'agentmark_rewrite_version' );
 	flush_rewrite_rules();
 } );
