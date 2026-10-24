@@ -2,8 +2,9 @@
 Contributors: selvasudar
 Tags: markdown, ai, llms, rag, api
 Requires at least: 6.9
-Tested up to: 6.9
-Stable tag: 1.0.0
+Tested up to: 7.1
+Requires PHP: 7.4
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +97,12 @@ The built-in analytics show basic usage stats at Settings -> AgentMark Stats.
 Yes! Go to Settings -> AgentMark and enable any public custom post type.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fix: Resolved 404 errors on Markdown URLs with trailing slashes (e.g. .md/).
+* Fix: Automatically register and flush rewrite rules on plugin activation and version updates.
+* Fix: Ensure HTTP 200 status header is served for llms.txt discovery endpoint.
+* Tweak: Added fallback hierarchical page path lookup when resolving post endpoints.
 
 = 1.0.0 =
 * Initial release.

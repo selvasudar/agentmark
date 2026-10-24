@@ -18,6 +18,7 @@ class LLMS_Txt {
 			return;
 		}
 
+		status_header( 200 );
 		header( 'Content-Type: text/plain; charset=UTF-8' );
 
 		echo "# " . esc_html( get_bloginfo( 'name' ) ) . "\n\n";

@@ -74,15 +74,17 @@ class Router {
 	private function is_md_extension_url() {
 		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 		$uri         = wp_parse_url( $request_uri, PHP_URL_PATH );
+		$uri         = rtrim( (string) $uri, '/' );
 		return ( substr( $uri, -3 ) === '.md' );
 	}
 
 	private function get_path_from_uri() {
 		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 		$uri         = wp_parse_url( $request_uri, PHP_URL_PATH );
+		$uri         = rtrim( (string) $uri, '/' );
 		
 		// Remove .md extension
-		$path = substr( $uri, 0, -3 );
+		$path = ( substr( $uri, -3 ) === '.md' ) ? substr( $uri, 0, -3 ) : $uri;
 
 		// Remove site subdirectory if present
 		$site_path = wp_parse_url( home_url(), PHP_URL_PATH );
@@ -114,6 +116,17 @@ class Router {
 		try {
 			// Find the post by path
 			$post_id = url_to_postid( home_url( $path ) );
+
+			if ( ! $post_id ) {
+				$post_id = url_to_postid( trailingslashit( home_url( $path ) ) );
+			}
+
+			if ( ! $post_id ) {
+				$page = get_page_by_path( $path );
+				if ( $page ) {
+					$post_id = $page->ID;
+				}
+			}
 
 			if ( ! $post_id ) {
 				status_header( 404 );

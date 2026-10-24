@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AgentMark
  * Description: AI-Ready Markdown Endpoints & llms.txt for WordPress.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Selvakumar Duraipandian
  * Author URI: https://github.com/selvasudar
  * License: GPLv2 or later
@@ -10,7 +10,7 @@
  * Text Domain: agentmark
  * Domain Path: /languages
  * Requires at least: 6.9
- * Tested up to: 6.9
+ * Tested up to: 7.1
  * Requires PHP: 7.4
  */
 
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define constants
-define( 'AGENTMARK_VERSION', '1.0.0' );
+define( 'AGENTMARK_VERSION', '1.0.1' );
 define( 'AGENTMARK_PATH', plugin_dir_path( __FILE__ ) );
 define( 'AGENTMARK_URL', plugin_dir_url( __FILE__ ) );
 
@@ -65,7 +65,8 @@ add_action( 'save_post', function( $post_id ) {
 // Auto-flush rewrite rules when plugin version changes
 add_action( 'init', function() {
 	if ( get_option( 'agentmark_rewrite_version' ) !== AGENTMARK_VERSION ) {
-		new AgentMark\Router();
+		$router = new AgentMark\Router();
+		$router->add_rewrite_rules();
 		flush_rewrite_rules();
 		update_option( 'agentmark_rewrite_version', AGENTMARK_VERSION );
 	}
@@ -73,7 +74,8 @@ add_action( 'init', function() {
 
 // Activation/Deactivation hooks
 register_activation_hook( __FILE__, function() {
-	new AgentMark\Router();
+	$router = new AgentMark\Router();
+	$router->add_rewrite_rules();
 	flush_rewrite_rules();
 	update_option( 'agentmark_rewrite_version', AGENTMARK_VERSION );
 } );
